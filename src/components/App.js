@@ -31,38 +31,24 @@ function App() {
       })
   }
 
-  function handleDonate(deleteId) {
-    const deleteConfigObj = {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    }
-    fetch(`http://localhost:3001/toys/${deleteId}`, deleteConfigObj)
-      .then(setToys(
-        toys.filter(toy => toy.id !== deleteId)
-      ))
+  function handleDonate(donatedToyId) {
+    setToys(
+      toys.filter(toy => toy.id !== donatedToyId)
+    )
   }
 
-  function handleLike(likeId, currLikes) {
-    const likeConfigObj = {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ likes: currLikes + 1 })
-    }
-    fetch(`http://localhost:3001/toys/${likeId}`, likeConfigObj)
-      .then(resp => resp.json())
-      .then(data => {
-        const udToys = toys.map(toy => {
-          if (toy.id === likeId) {
-            return {
-              ...toy,
-              likes: data.likes 
-            }
-          } else {
-            return toy
-          }
-        })
-        setToys(udToys)
-      })
+  function handleLike(likedToy) {
+    const udToys = toys.map(toy => {
+      if (toy.id === likedToy.id) {
+        return {
+          ...toy,
+          likes: likedToy.likes
+        }
+      } else {
+        return toy
+      }
+    })
+    setToys(udToys)
   }
 
   return (
